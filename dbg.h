@@ -776,7 +776,7 @@ inline typename std::enable_if<detail::is_container<const Container&>::value,
 pretty_print(std::ostream& stream, const Container& value) {
   stream << "{";
   const size_t size = detail::size(value);
-  const size_t n = std::min(size_t{10}, size);
+  const size_t n = size;
   size_t i = 0;
   using std::begin;
   using std::end;
@@ -785,11 +785,6 @@ pretty_print(std::ostream& stream, const Container& value) {
     if (i != n - 1) {
       stream << ", ";
     }
-  }
-
-  if (size > n) {
-    stream << ", ...";
-    stream << " size:" << size;
   }
 
   stream << "}";
@@ -803,7 +798,7 @@ inline typename std::enable_if<
 pretty_print(std::ostream& stream, ContainerAdapter value) {
   stream << "{";
   const size_t size = detail::size(value);
-  const size_t n = std::min(size_t{10}, size);
+  const size_t n = size;
 
   std::vector<typename ContainerAdapter::value_type> elements;
   elements.reserve(n);
@@ -812,17 +807,11 @@ pretty_print(std::ostream& stream, ContainerAdapter value) {
   }
   std::reverse(elements.begin(), elements.end());
 
-  if (size > n) {
-    stream << "..., ";
-  }
   for (size_t i = 0; i < n; ++i) {
     pretty_print(stream, elements[i]);
     if (i != n - 1) {
       stream << ", ";
     }
-  }
-  if (size > n) {
-    stream << " (size:" << size << ")";
   }
 
   stream << "}";
